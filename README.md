@@ -1,7 +1,7 @@
 <p align="center">
   <img src="./meta/check.png" width="700" alt="codechecks.io">
-  <h3 align="center">Build Size Watcher</h3>
-  <p align="center">Keep your build size in check and detect when it gets too big</p>
+  <h3 align="center">Boilerplate codecheck</h3>
+  <p align="center">Perfect to start working on a new thing</p>
 
   <p align="center">
     <a href="https://circleci.com/gh/codechecks/build-size-watcher"><img alt="Build Status" src="https://circleci.com/gh/codechecks/build-size-watcher/tree/master.svg?style=svg"></a>
@@ -13,13 +13,7 @@
 ## Install
 
 ```sh
-npm add --save-dev @codechecks/build-size-watcher
-```
-
-or
-
-```sh
-yarn add --dev @codechecks/build-size-watcher
+npm install --save-dev boilerplate
 ```
 
 ## Usage
@@ -28,18 +22,11 @@ Add to your `codechecks.yml` file:
 
 ```yml
 checks:
-  - name: build-size-watcher
+  - name: boilerplate
     options:
-      files:
-        - path: "./build/static/js/*.js"
-          maxSize: 1MB
-        - path: "./build/static/css/*.css"
-        - path: "./build/static/images/*.jpg"
+      # ...
   # ...
 ```
-
-With each pull request you will get a summary like `Change +3 KB(+1%) Total 300KB` and detailed size
-breakdown for each path in check's details.
 
 ## API
 
