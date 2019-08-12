@@ -1,5 +1,4 @@
 import * as mockFS from "mock-fs";
-import { join } from "path";
 import { codechecks } from "@codechecks/client";
 import lighthouseKeeper from "..";
 import { LighthouseReport } from "../lighthouse";

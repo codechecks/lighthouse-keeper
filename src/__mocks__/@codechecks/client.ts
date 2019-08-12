@@ -9,7 +9,7 @@ export const codechecks: Partial<typeof CC.codechecks> = {
   getFile: jest.fn(),
   getDirectory: jest.fn(),
   saveDirectory: jest.fn(),
-  getArtifactLink: jest.fn((path) => `http://localhost/${path}`),
+  getArtifactLink: jest.fn(path => `http://localhost/${path}`),
   isPr: jest.fn(),
   context: {
     pr: {
