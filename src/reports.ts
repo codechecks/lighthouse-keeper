@@ -1,22 +1,31 @@
-import * as codechecks from "@codechecks/client";
+import { CodeChecksReport } from "@codechecks/client";
+import { ReportComparison } from "./compareReports";
+
 const table = require("markdown-table");
 
-export function getReport(
-  artifactComparison: any,
-  baseBranchArtifact: any,
-  reportLink: any,
-): codechecks.CodeChecksReport {
+export function getReport({
+  reportComparison,
+  baselineExists,
+  reportLink,
+}: {
+  reportComparison: ReportComparison;
+  baselineExists: boolean;
+  reportLink: string;
+}): CodeChecksReport {
   return {
     status: "success",
-    name: "Lighthouse CI",
-    shortDescription: getShortDescription(artifactComparison, baseBranchArtifact),
-    longDescription: getLongDescription(artifactComparison),
+    name: "Lighthouse Keeper",
+    shortDescription: getShortDescription(reportComparison, baselineExists),
+    longDescription: getLongDescription(reportComparison),
     detailsUrl: reportLink,
   };
 }
 
-function getShortDescription(artifactComparison, base) {
-  if (!base) {
+function getShortDescription(
+  artifactComparison: ReportComparison,
+  baselineExists: boolean,
+): string {
+  if (!baselineExists) {
     return "New Lighthouse report generated!";
   }
 
@@ -34,7 +43,7 @@ function getShortDescription(artifactComparison, base) {
   return `No changes in metrics detected!`;
 }
 
-function getLongDescription(artifactComparison) {
+function getLongDescription(artifactComparison: ReportComparison): string {
   // prettier-ignore
   const rows = [
     ['Name', 'Status', 'Score'],
@@ -44,7 +53,7 @@ function getLongDescription(artifactComparison) {
   return table(rows) + "\n";
 }
 
-function getIcon(diff) {
+function getIcon(diff: number): string {
   if (diff > 0) {
     return "✅";
   }
@@ -56,7 +65,7 @@ function getIcon(diff) {
   return "";
 }
 
-function diffWithSign(value) {
+function diffWithSign(value: number): string {
   if (value > 0) {
     return `+${value}`;
   }

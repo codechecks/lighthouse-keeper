@@ -1,42 +1,41 @@
+import { codechecks } from "@codechecks/client";
+import { join } from "path";
+import * as fs from "fs";
+import { dir } from "tmp-promise";
+
 import { getReport } from "./reports";
+import { UserProvidedOptions } from "./types";
+import { parseOptions } from "./options";
+import { getLighthouseReport, LighthouseMetrics } from "./lighthouse";
+import { compareReports } from "./compareReports";
 
-const { join } = require("path");
-const fs = require("fs");
-const { codechecks } = require("@codechecks/client");
-const { dir } = require("tmp-promise");
+const ARTIFACT_ROOT = "lighthouse-keeper";
 
-const lighthouseReporter = require("lighthouse-ci/lib/lighthouse-reporter");
-const { getChromeFlags } = require("lighthouse-ci/lib/config");
+export async function lighthouseKeeper(_options: UserProvidedOptions = {}): Promise<void> {
+  const options = parseOptions(_options);
 
-const ARTIFACT_ROOT = "lighthouse-ci";
+  const lighthouseReport = await getLighthouseReport(options);
 
-export async function lighthouseKeeper(options = {}) {
-  const lighthouseReport = await lighthouseReporter(
-    options.url,
-    { report: true },
-    getChromeFlags(),
-    {},
-  );
-
-  const metrics = lighthouseReport.categoryReport;
-  const { htmlReport } = lighthouseReport;
-
-  codechecks.saveValue(`${ARTIFACT_ROOT}/metrics.json`, metrics);
-  const reportLink = await uploadHtmlReport(htmlReport);
+  codechecks.saveValue(`${ARTIFACT_ROOT}/metrics.json`, lighthouseReport.metrics);
+  const reportLink = await uploadHtmlReport(lighthouseReport.htmlReport);
 
   if (!codechecks.isPr()) {
     return;
   }
 
-  const baseBranchArtifact = await codechecks.getValue(`${ARTIFACT_ROOT}/metrics.json`);
+  const baseMetrics = await codechecks.getValue<LighthouseMetrics | undefined>(
+    `${ARTIFACT_ROOT}/metrics.json`,
+  );
 
-  const artifactComparison = compareArtifacts(baseBranchArtifact, metrics);
+  const reportComparison = compareReports(baseMetrics || {}, lighthouseReport.metrics);
 
-  await codechecks.report(getReport(artifactComparison, baseBranchArtifact, reportLink));
+  await codechecks.report(
+    getReport({ reportComparison, baselineExists: !!baseMetrics, reportLink }),
+  );
 }
 export default lighthouseKeeper;
 
-async function uploadHtmlReport(htmlReport) {
+async function uploadHtmlReport(htmlReport: string): Promise<string> {
   const { path: randomDir } = await dir();
   const outputPath = join(randomDir, "lighthouse-report.html");
 
@@ -44,26 +43,4 @@ async function uploadHtmlReport(htmlReport) {
   await codechecks.saveFile(`${ARTIFACT_ROOT}/report.html`, outputPath);
 
   return codechecks.getArtifactLink(`${ARTIFACT_ROOT}/report.html`);
-}
-
-function compareArtifacts(base = {}, head) {
-  function diffFor(key, name) {
-    if (!head[key]) {
-      return undefined;
-    }
-
-    return {
-      name,
-      value: head[key],
-      diff: head[key] - (base[key] || 0),
-    };
-  }
-
-  return [
-    diffFor("performance", "Performance"),
-    diffFor("accessibility", "Accessibility"),
-    diffFor("best-practices", "Best practices"),
-    diffFor("seo", "SEO"),
-    diffFor("pwa", "PWA"),
-  ].filter(d => Boolean(d));
 }
