@@ -1,0 +1,4 @@
+checks:
+  - name: ../src/index.ts
+    options:
+      url: https://google.com
