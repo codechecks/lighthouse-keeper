@@ -5,8 +5,11 @@ export const codechecks: Partial<typeof CC.codechecks> = {
   report: jest.fn(),
   getValue: jest.fn(),
   saveValue: jest.fn(),
+  saveFile: jest.fn(),
+  getFile: jest.fn(),
   getDirectory: jest.fn(),
   saveDirectory: jest.fn(),
+  getArtifactLink: jest.fn((path) => `http://localhost/${path}`),
   isPr: jest.fn(),
   context: {
     pr: {
