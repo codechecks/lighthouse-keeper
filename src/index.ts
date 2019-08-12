@@ -1,15 +1,13 @@
 import { codechecks } from "@codechecks/client";
-import { join } from "path";
-import * as fs from "fs";
-import { dir } from "tmp-promise";
 
 import { getReport } from "./reports";
 import { UserProvidedOptions } from "./types";
 import { parseOptions } from "./options";
 import { getLighthouseReport, LighthouseMetrics } from "./lighthouse";
 import { compareReports } from "./compareReports";
+import { uploadHtmlReport } from "./uploadHtmlReport";
 
-const ARTIFACT_ROOT = "lighthouse-keeper";
+export const ARTIFACT_ROOT = "lighthouse-keeper";
 
 export async function lighthouseKeeper(_options: UserProvidedOptions = {}): Promise<void> {
   const options = parseOptions(_options);
@@ -34,13 +32,3 @@ export async function lighthouseKeeper(_options: UserProvidedOptions = {}): Prom
   );
 }
 export default lighthouseKeeper;
-
-async function uploadHtmlReport(htmlReport: string): Promise<string> {
-  const { path: randomDir } = await dir();
-  const outputPath = join(randomDir, "lighthouse-report.html");
-
-  fs.writeFileSync(outputPath, htmlReport);
-  await codechecks.saveFile(`${ARTIFACT_ROOT}/report.html`, outputPath);
-
-  return codechecks.getArtifactLink(`${ARTIFACT_ROOT}/report.html`);
-}
