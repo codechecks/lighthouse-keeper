@@ -1,5 +1,4 @@
 <p align="center">
-  <img src="./meta/check.png" width="700" alt="codechecks.io">
   <h3 align="center">Lighthouse keeper</h3>
   <p align="center">Keep an eye on Google Lighthouse score changes 💡👀</p>
 
@@ -17,6 +16,9 @@ npm install --save-dev @codechecks/lighthouse-keeper
 ```
 
 ## Usage
+
+Are you new to codechecks? Check out
+[getting started guide (it's simple)](https://github.com/codechecks/docs/blob/master/getting-started.md)!
 
 Add to your `codechecks.yml` file:
 
