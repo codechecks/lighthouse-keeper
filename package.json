@@ -1,7 +1,7 @@
 {
   "name": "@codechecks/lighthouse-keeper",
-  "description": "",
-  "keywords": [],
+  "description": "Keep an eye on Google Lighthouse score changes",
+  "keywords": ["lighthouse", "google-lighthouse","performance", "codechecks"],
   "repository": "codechecks/lighthouse-keeper",
   "author": "Chris Kaczor <chris@kaczor.io>",
   "version": "0.0.1",
