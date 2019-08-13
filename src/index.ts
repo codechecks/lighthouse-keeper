@@ -24,6 +24,9 @@ export async function lighthouseKeeper(_options: UserProvidedOptions = {}): Prom
   const reportLink = await uploadHtmlReport(lighthouseReport.htmlReport);
 
   if (!codechecks.isPr()) {
+    if (server) {
+      server.close();
+    }
     return;
   }
 
