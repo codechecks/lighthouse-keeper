@@ -6,11 +6,17 @@ import { parseOptions } from "./options";
 import { getLighthouseReport, LighthouseMetrics } from "./lighthouse";
 import { compareReports } from "./compareReports";
 import { uploadHtmlReport } from "./uploadHtmlReport";
+import { startServer } from "./start-server";
 
 export const ARTIFACT_ROOT = "lighthouse-keeper";
 
 export async function lighthouseKeeper(_options: UserProvidedOptions = {}): Promise<void> {
   const options = parseOptions(_options);
+
+  let server;
+  if (options.buildPath) {
+    server = await startServer(options.buildPath);
+  }
 
   const lighthouseReport = await getLighthouseReport(options);
 
@@ -30,5 +36,8 @@ export async function lighthouseKeeper(_options: UserProvidedOptions = {}): Prom
   await codechecks.report(
     getReport({ reportComparison, baselineExists: !!baseMetrics, reportLink }),
   );
+  if (server) {
+    server.close();
+  }
 }
 export default lighthouseKeeper;

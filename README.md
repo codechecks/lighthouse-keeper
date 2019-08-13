@@ -26,8 +26,10 @@ Add to your `codechecks.yml` file:
 checks:
   - name: lighthouse-keeper
     options:
-      # you need to spawn server serving your content by yourself
-      url: "http://localhost:8080"
+      # just provide path to your build
+      buildPath: ./build
+      # or full url
+      # url: https://google.com
   # ...
 ```
 
