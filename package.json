@@ -9,7 +9,7 @@
   ],
   "repository": "codechecks/lighthouse-keeper",
   "author": "Chris Kaczor <chris@kaczor.io>",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "license": "MIT",
