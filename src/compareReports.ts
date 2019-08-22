@@ -1,4 +1,4 @@
-import { LighthouseMetrics } from "./lighthouse";
+import { LighthouseMetrics } from "./lighthouse/lighthouse";
 
 export interface MetricComparison {
   name: string;

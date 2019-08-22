@@ -1,15 +1,9 @@
-import { Options } from "./types";
+import { Options } from "../types";
 
-const lighthouseReporter = require("lighthouse-ci/lib/lighthouse-reporter");
-const { getChromeFlags } = require("lighthouse-ci/lib/config");
+import { runLighthouseAndGetReports } from "./runner";
 
 export async function getLighthouseReport(options: Options): Promise<LighthouseReport> {
-  const lighthouseReport = await lighthouseReporter(
-    options.url,
-    { report: true },
-    getChromeFlags(),
-    {},
-  );
+  const lighthouseReport = await runLighthouseAndGetReports(options.url);
 
   const metrics = lighthouseReport.categoryReport;
   const { htmlReport } = lighthouseReport;

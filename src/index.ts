@@ -3,7 +3,7 @@ import { codechecks } from "@codechecks/client";
 import { getReport } from "./reports";
 import { UserProvidedOptions } from "./types";
 import { parseOptions } from "./options";
-import { getLighthouseReport, LighthouseMetrics } from "./lighthouse";
+import { getLighthouseReport, LighthouseMetrics } from "./lighthouse/lighthouse";
 import { compareReports } from "./compareReports";
 import { uploadHtmlReport } from "./uploadHtmlReport";
 import { startServer } from "./start-server";

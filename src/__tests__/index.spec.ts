@@ -1,11 +1,11 @@
 import { codechecks } from "@codechecks/client";
 import lighthouseKeeper from "..";
-import { LighthouseReport } from "../lighthouse";
-import { getLighthouseReport } from "../lighthouse";
+import { LighthouseReport } from "../lighthouse/lighthouse";
+import { getLighthouseReport } from "../lighthouse/lighthouse";
 
 type Mocked<T> = { [k in keyof T]: jest.Mock<any> };
 
-jest.mock("../lighthouse");
+jest.mock("../lighthouse/lighthouse");
 jest.mock("../uploadHtmlReport");
 
 describe("lighthouse-keeper", () => {
