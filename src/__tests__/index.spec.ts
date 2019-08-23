@@ -1,6 +1,6 @@
 import { codechecks } from "@codechecks/client";
 import lighthouseKeeper from "..";
-import { LighthouseReport } from "../lighthouse/lighthouse";
+import { LighthouseReport } from "../lighthouse/types";
 import { getLighthouseReport } from "../lighthouse/lighthouse";
 
 type Mocked<T> = { [k in keyof T]: jest.Mock<any> };
@@ -24,6 +24,7 @@ describe("lighthouse-keeper", () => {
         accessibility: 60,
         seo: 84,
       },
+      failedAudits: [],
     };
     (getLighthouseReport as any).mockReturnValue(lighthouseReport);
 

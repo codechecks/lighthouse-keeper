@@ -1,4 +1,6 @@
 import * as chromeLauncher from "chrome-launcher";
+import { LighthouseReport, LighthouseAudit } from "./types";
+import { pick } from "lodash";
 
 const lighthouse = require("lighthouse");
 const ReportGenerator = require("lighthouse/lighthouse-core/report/report-generator");
@@ -36,16 +38,23 @@ function createCategoryReport(results: any): any {
   }, {});
 }
 
-export async function runLighthouseAndGetReports(url: string): Promise<any> {
+function getFailedAudits(jsonReport: any): LighthouseAudit[] {
+  const audits = Object.values(jsonReport.audits);
+  const failedAudits = audits.filter((a: any) => a.score === 0);
+  const failedAuditsMinimalDescription: any = failedAudits.map(a =>
+    pick(a, ["id", "title", "description"]),
+  );
+  return failedAuditsMinimalDescription;
+}
+
+export async function runLighthouseAndGetReports(url: string): Promise<LighthouseReport> {
   const lighthouseResult = await launchChromeAndRunLighthouse(url);
 
   const htmlReport = createHtmlReport(lighthouseResult.lhr);
   const jsonReport = createJsonReport(lighthouseResult.lhr);
+  const failedAudits = getFailedAudits(jsonReport);
 
   const categoryReport = createCategoryReport(lighthouseResult.lhr);
 
-  // how to find failing audits:
-  //jsonReport.audits WHERE "score" === 0
-
-  return { categoryReport, htmlReport, jsonReport };
+  return { metrics: categoryReport, htmlReport, failedAudits };
 }
