@@ -9,11 +9,12 @@ export interface LighthouseMetrics {
 export interface LighthouseReport {
   htmlReport: string;
   metrics: LighthouseMetrics;
-  failedAudits: LighthouseAudit[];
+  audits: LighthouseAudit[];
 }
 
 export interface LighthouseAudit {
   id: string;
   title: string;
   description: string;
+  score: number | null;
 }

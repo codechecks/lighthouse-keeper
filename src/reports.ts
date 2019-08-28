@@ -29,8 +29,8 @@ function getShortDescription(
     return "New Lighthouse report generated!";
   }
 
-  const decreased = artifactComparison.filter(c => c.diff < 0).length;
-  const increased = artifactComparison.filter(c => c.diff > 0).length;
+  const decreased = artifactComparison.metricsComparison.filter(c => c.diff < 0).length;
+  const increased = artifactComparison.metricsComparison.filter(c => c.diff > 0).length;
 
   if (decreased > 0) {
     return `${decreased} metrics decreased, be careful!`;
@@ -47,10 +47,16 @@ function getLongDescription(artifactComparison: ReportComparison): string {
   // prettier-ignore
   const rows = [
     ['Name', 'Status', 'Score'],
-    ...artifactComparison.map(a => [a.name, `${getIcon(a.diff)} ${diffWithSign(a.diff)}`, a.value])
+    ...artifactComparison.metricsComparison.map(a => [a.name, `${getIcon(a.diff)} ${diffWithSign(a.diff)}`, a.value])
   ]
+  const metricsTable = table(rows) + "\n";
 
-  return table(rows) + "\n";
+  const newFailedAudits = `
+## New Failed Audits:
+${artifactComparison.failedAudits.map(a => `### ${a.title}\n${a.description}`).join("\n\n---\n\n")}
+  `;
+
+  return [metricsTable, newFailedAudits].join("\n");
 }
 
 function getIcon(diff: number): string {

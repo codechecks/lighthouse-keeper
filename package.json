@@ -14,7 +14,7 @@
   "types": "lib/index.d.ts",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node ./src/index.ts",
+    "start:example": "codechecks ./example/codechecks.yml",
     "build": "rm -rf ./lib && tsc",
     "format": "prettier --list-different '**/*.{ts,json,md, gql}'",
     "format:fix": "prettier --write '**/*.{ts,json,md,gql}'",

@@ -3,10 +3,11 @@ import { codechecks } from "@codechecks/client";
 import { getReport } from "./reports";
 import { UserProvidedOptions } from "./types";
 import { parseOptions } from "./options";
-import { getLighthouseReport, LighthouseMetrics } from "./lighthouse/lighthouse";
+import { runLighthouseAndGetReport } from "./lighthouse/lighthouse";
 import { compareReports } from "./compareReports";
 import { uploadHtmlReport } from "./uploadHtmlReport";
 import { startServer } from "./start-server";
+import { LighthouseReport } from "./lighthouse/types";
 
 export const ARTIFACT_ROOT = "lighthouse-keeper";
 
@@ -18,9 +19,9 @@ export async function lighthouseKeeper(_options: UserProvidedOptions = {}): Prom
     server = await startServer(options.buildPath);
   }
 
-  const lighthouseReport = await getLighthouseReport(options);
+  const lighthouseReport = await runLighthouseAndGetReport(options.url);
 
-  codechecks.saveValue(`${ARTIFACT_ROOT}/metrics.json`, lighthouseReport.metrics);
+  codechecks.saveValue(`${ARTIFACT_ROOT}/full-report.json`, lighthouseReport);
   const reportLink = await uploadHtmlReport(lighthouseReport.htmlReport);
 
   if (!codechecks.isPr()) {
@@ -30,14 +31,14 @@ export async function lighthouseKeeper(_options: UserProvidedOptions = {}): Prom
     return;
   }
 
-  const baseMetrics = await codechecks.getValue<LighthouseMetrics | undefined>(
-    `${ARTIFACT_ROOT}/metrics.json`,
+  const baseReport = await codechecks.getValue<LighthouseReport | undefined>(
+    `${ARTIFACT_ROOT}/full-report.json`,
   );
 
-  const reportComparison = compareReports(baseMetrics || {}, lighthouseReport.metrics);
+  const reportComparison = compareReports(baseReport, lighthouseReport);
 
   await codechecks.report(
-    getReport({ reportComparison, baselineExists: !!baseMetrics, reportLink }),
+    getReport({ reportComparison, baselineExists: !!baseReport, reportLink }),
   );
   if (server) {
     server.close();
