@@ -22,8 +22,7 @@ export function getReport({
     status: failedMetrics.length > 0 ? "failure" : "success",
     name: "Lighthouse Keeper",
     shortDescription: getShortDescription(reportComparison, baselineExists, failedMetrics),
-    longDescription: getLongDescription(reportComparison, failedMetrics, minScores),
-    detailsUrl: reportLink,
+    longDescription: getLongDescription(reportComparison, failedMetrics, minScores, reportLink),
   };
 }
 
@@ -77,6 +76,7 @@ function getLongDescription(
   artifactComparison: ReportComparison,
   failedMetrics: FailedMetricComparison[],
   minScores: MinScores,
+  reportLink: string,
 ): string {
   function renderRow(metric: MetricComparison): string[] {
     const failedMetric = failedMetrics.find(fm => fm.key === metric.key);
@@ -95,10 +95,14 @@ function getLongDescription(
     }
 
     return `
-## New Failed Audits (${newFailedAudits.length}):
+## New failed audits (${newFailedAudits.length}):
 ${artifactComparison.failedAudits
   .map(a => `### ${a.title}\n${a.description}`)
   .join("\n\n---\n\n")}`;
+  }
+
+  function renderReportLink(reportLink: string): string {
+    return `## [Full report link 📝](${reportLink})`;
   }
 
   // prettier-ignore
@@ -111,7 +115,11 @@ ${artifactComparison.failedAudits
       align: ["l", "c", "r", "r"],
     }) + "\n";
 
-  return [metricsTable, renderFailedAudits(artifactComparison.failedAudits)].join("\n");
+  return [
+    metricsTable,
+    renderFailedAudits(artifactComparison.failedAudits),
+    renderReportLink(reportLink),
+  ].join("\n\n");
 }
 
 function getIcon(diff: number, failed: boolean): string {

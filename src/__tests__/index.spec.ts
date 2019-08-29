@@ -122,7 +122,6 @@ Object {
     "calls": Array [
       Array [
         Object {
-          "detailsUrl": undefined,
           "longDescription": "| Name           | Status | Score | Min Score |
 | :------------- | :----: | ----: | --------: |
 | Performance    |  ✅ +90 |    90 |         - |
@@ -130,7 +129,10 @@ Object {
 | Best practices |  ✅ +70 |    70 |         - |
 | SEO            |  ✅ +84 |    84 |         - |
 
-",
+
+
+
+## [Full report link 📝](undefined)",
           "name": "Lighthouse Keeper",
           "shortDescription": "New Lighthouse report generated!",
           "status": "success",
@@ -249,7 +251,6 @@ Object {
     "calls": Array [
       Array [
         Object {
-          "detailsUrl": undefined,
           "longDescription": "| Name           | Status | Score | Min Score |
 | :------------- | :----: | ----: | --------: |
 | Performance    |  ✅ +7  |    90 |         - |
@@ -257,7 +258,10 @@ Object {
 | Best practices |  ✅ +3  |    70 |         - |
 | SEO            |    -   |    84 |         - |
 
-",
+
+
+
+## [Full report link 📝](undefined)",
           "name": "Lighthouse Keeper",
           "shortDescription": "2 metrics got better, good job!",
           "status": "success",
@@ -388,7 +392,6 @@ Object {
     "calls": Array [
       Array [
         Object {
-          "detailsUrl": undefined,
           "longDescription": "| Name           | Status | Score | Min Score |
 | :------------- | :----: | ----: | --------: |
 | Performance    | 🔴 -10 |    90 |        95 |
@@ -397,9 +400,12 @@ Object {
 | SEO            |    -   |    84 |         - |
 
 
-## New Failed Audits (1):
+
+## New failed audits (1):
 ### Document does not have a meta description
-Meta descriptions may be included in search results to concisely summarize page content.",
+Meta descriptions may be included in search results to concisely summarize page content.
+
+## [Full report link 📝](undefined)",
           "name": "Lighthouse Keeper",
           "shortDescription": "Performance scores dropped too low!",
           "status": "failure",
