@@ -1,5 +1,5 @@
 {
-  "name": "lighthouse-keeper",
+  "name": "@codechecks/lighthouse-keeper",
   "description": "Keep an eye on Google Lighthouse score changes",
   "keywords": [
     "lighthouse",

@@ -12,7 +12,7 @@
 ## Install
 
 ```sh
-npm install --save-dev lighthouse-keeper
+npm install --save-dev @codechecks/lighthouse-keeper
 ```
 
 ## Usage
