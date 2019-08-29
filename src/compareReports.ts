@@ -3,9 +3,14 @@ import { differenceBy } from "lodash";
 
 export interface MetricComparison {
   name: string;
+  key: string;
   value: number;
   diff: number;
 }
+export type FailedMetricComparison = MetricComparison & {
+  minScore: number;
+};
+
 export type ReportComparison = {
   metricsComparison: MetricComparison[];
   failedAudits: LighthouseAudit[];
@@ -32,6 +37,7 @@ function compareMetrics(base: LighthouseMetrics, head: LighthouseMetrics): Metri
 
     return {
       name,
+      key,
       value: head[key]!,
       diff: head[key]! - (base[key] || 0),
     };

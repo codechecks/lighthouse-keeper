@@ -8,5 +8,6 @@ export function parseOptions(options: UserProvidedOptions): Options {
   return {
     buildPath: options.buildPath,
     url: options.url || "http://localhost:3000",
+    minScores: options.minScores || {},
   };
 }

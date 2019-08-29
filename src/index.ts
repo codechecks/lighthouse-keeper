@@ -38,7 +38,12 @@ export async function lighthouseKeeper(_options: UserProvidedOptions = {}): Prom
   const reportComparison = compareReports(baseReport, lighthouseReport);
 
   await codechecks.report(
-    getReport({ reportComparison, baselineExists: !!baseReport, reportLink }),
+    getReport({
+      reportComparison,
+      baselineExists: !!baseReport,
+      reportLink,
+      minScores: options.minScores,
+    }),
   );
   if (server) {
     server.close();

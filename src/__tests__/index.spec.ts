@@ -123,12 +123,12 @@ Object {
       Array [
         Object {
           "detailsUrl": undefined,
-          "longDescription": "| Name           | Status | Score |
-| -------------- | ------ | ----- |
-| Performance    | ✅ +90  | 90    |
-| Accessibility  | ✅ +60  | 60    |
-| Best practices | ✅ +70  | 70    |
-| SEO            | ✅ +84  | 84    |
+          "longDescription": "| Name           | Status | Score | Min Score |
+| :------------- | :----: | ----: | --------: |
+| Performance    |  ✅ +90 |    90 |         - |
+| Accessibility  |  ✅ +60 |    60 |         - |
+| Best practices |  ✅ +70 |    70 |         - |
+| SEO            |  ✅ +84 |    84 |         - |
 
 
 ## New Failed Audits:
@@ -252,12 +252,12 @@ Object {
       Array [
         Object {
           "detailsUrl": undefined,
-          "longDescription": "| Name           | Status | Score |
-| -------------- | ------ | ----- |
-| Performance    | ✅ +7   | 90    |
-| Accessibility  |  -     | 60    |
-| Best practices | ✅ +3   | 70    |
-| SEO            |  -     | 84    |
+          "longDescription": "| Name           | Status | Score | Min Score |
+| :------------- | :----: | ----: | --------: |
+| Performance    |  ✅ +7  |    90 |         - |
+| Accessibility  |    -   |    60 |         - |
+| Best practices |  ✅ +3  |    70 |         - |
+| SEO            |    -   |    84 |         - |
 
 
 ## New Failed Audits:

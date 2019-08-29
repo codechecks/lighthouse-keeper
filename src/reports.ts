@@ -1,5 +1,6 @@
 import { CodeChecksReport } from "@codechecks/client";
-import { ReportComparison } from "./compareReports";
+import { ReportComparison, MetricComparison, FailedMetricComparison } from "./compareReports";
+import { MinScores } from "./types";
 
 const table = require("markdown-table");
 
@@ -7,24 +8,52 @@ export function getReport({
   reportComparison,
   baselineExists,
   reportLink,
+  minScores,
 }: {
   reportComparison: ReportComparison;
   baselineExists: boolean;
   reportLink: string;
+  minScores: MinScores;
 }): CodeChecksReport {
+  const failedMetrics = getFailedMetrics(reportComparison, minScores);
+
   return {
     status: "success",
     name: "Lighthouse Keeper",
-    shortDescription: getShortDescription(reportComparison, baselineExists),
-    longDescription: getLongDescription(reportComparison),
+    shortDescription: getShortDescription(reportComparison, baselineExists, failedMetrics),
+    longDescription: getLongDescription(reportComparison, failedMetrics, minScores),
     detailsUrl: reportLink,
   };
+}
+
+function getFailedMetrics(
+  comparison: ReportComparison,
+  minScore: MinScores,
+): FailedMetricComparison[] {
+  const failedMetrics: FailedMetricComparison[] = [];
+
+  for (const metricsComparison of comparison.metricsComparison) {
+    const minValue = minScore[metricsComparison.key];
+    if (minValue === undefined) {
+      continue;
+    }
+
+    if (metricsComparison.value < minValue) {
+      failedMetrics.push({ ...metricsComparison, minScore: minValue });
+    }
+  }
+
+  return failedMetrics;
 }
 
 function getShortDescription(
   artifactComparison: ReportComparison,
   baselineExists: boolean,
+  failedMetrics: FailedMetricComparison[],
 ): string {
+  if (failedMetrics.length > 0) {
+    return `${failedMetrics.map(m => m.name).join(", ")} scores dropped too low!`;
+  }
   if (!baselineExists) {
     return "New Lighthouse report generated!";
   }
@@ -43,13 +72,31 @@ function getShortDescription(
   return `No changes in metrics detected!`;
 }
 
-function getLongDescription(artifactComparison: ReportComparison): string {
+function getLongDescription(
+  artifactComparison: ReportComparison,
+  failedMetrics: FailedMetricComparison[],
+  minScores: MinScores,
+): string {
+  function renderRow(metric: MetricComparison): string[] {
+    const failedMetric = failedMetrics.find(fm => fm.key === metric.key);
+    const minScore = minScores[metric.key];
+    return [
+      metric.name,
+      `${getIcon(metric.diff, !!failedMetric)} ${diffWithSign(metric.diff)}`,
+      metric.value.toString(),
+      minScore ? minScore.toString() : "-",
+    ];
+  }
+
   // prettier-ignore
   const rows = [
-    ['Name', 'Status', 'Score'],
-    ...artifactComparison.metricsComparison.map(a => [a.name, `${getIcon(a.diff)} ${diffWithSign(a.diff)}`, a.value])
+    ['Name', 'Status', 'Score', 'Min Score'],
+    ...artifactComparison.metricsComparison.map(a => renderRow(a))
   ]
-  const metricsTable = table(rows) + "\n";
+  const metricsTable =
+    table(rows, {
+      align: ["l", "c", "r", "r"],
+    }) + "\n";
 
   const newFailedAudits = `
 ## New Failed Audits:
@@ -59,13 +106,17 @@ ${artifactComparison.failedAudits.map(a => `### ${a.title}\n${a.description}`).j
   return [metricsTable, newFailedAudits].join("\n");
 }
 
-function getIcon(diff: number): string {
+function getIcon(diff: number, failed: boolean): string {
+  if (failed) {
+    return "🔴";
+  }
+
   if (diff > 0) {
     return "✅";
   }
 
   if (diff < 0) {
-    return "🔴";
+    return "⚠️";
   }
 
   return "";
