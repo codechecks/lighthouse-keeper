@@ -24,6 +24,6 @@ export const codechecks: Partial<typeof CC.codechecks> = {
     },
     currentSha: "eeb6f98b8d0a93de251ea3e4a9d02e61ec850286",
     currentBranchName: "kk/feature-brach-1",
-    workspaceRoot: join(__dirname, "..", ".."),
+    workspaceRoot: "/tmp/codechecks/root",
   } as any,
 };

@@ -1,5 +1,7 @@
-const pkg = require("../package.json");
-require("please-upgrade-node")(pkg);
+if (process.env.NODE_ENV !== "test") {
+  const pkg = require("../package.json");
+  require("please-upgrade-node")(pkg);
+}
 
 import { codechecks } from "@codechecks/client";
 
