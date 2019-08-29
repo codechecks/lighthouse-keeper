@@ -1,7 +1,7 @@
 import { codechecks } from "@codechecks/client";
 import lighthouseKeeper from "..";
 import { LighthouseReport } from "../lighthouse/types";
-import { getLighthouseReport } from "../lighthouse/lighthouse";
+import { runLighthouseAndGetReport } from "../lighthouse/lighthouse";
 
 type Mocked<T> = { [k in keyof T]: jest.Mock<any> };
 
@@ -24,9 +24,9 @@ describe("lighthouse-keeper", () => {
         accessibility: 60,
         seo: 84,
       },
-      failedAudits: [],
+      audits: [],
     };
-    (getLighthouseReport as any).mockReturnValue(lighthouseReport);
+    (runLighthouseAndGetReport as any).mockReturnValue(lighthouseReport);
 
     await lighthouseKeeper({
       url: "https://google.com",
@@ -37,12 +37,16 @@ describe("lighthouse-keeper", () => {
 [MockFunction] {
   "calls": Array [
     Array [
-      "lighthouse-keeper/metrics.json",
+      "lighthouse-keeper/full-report.json",
       Object {
-        "accessibility": 60,
-        "best-practices": 70,
-        "performance": 90,
-        "seo": 84,
+        "audits": Array [],
+        "htmlReport": "<html></html>",
+        "metrics": Object {
+          "accessibility": 60,
+          "best-practices": 70,
+          "performance": 90,
+          "seo": 84,
+        },
       },
     ],
   ],

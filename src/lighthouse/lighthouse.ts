@@ -4,6 +4,17 @@ import { LighthouseReport } from "./types";
 const lighthouse = require("lighthouse");
 const ReportGenerator = require("lighthouse/lighthouse-core/report/report-generator");
 
+export async function runLighthouseAndGetReport(url: string): Promise<LighthouseReport> {
+  const lighthouseResult = await launchChromeAndRunLighthouse(url);
+
+  const htmlReport = createHtmlReport(lighthouseResult.lhr);
+  const jsonReport = createJsonReport(lighthouseResult.lhr);
+
+  const categoryReport = createCategoryReport(lighthouseResult.lhr);
+
+  return { metrics: categoryReport, htmlReport, audits: Object.values(jsonReport.audits) };
+}
+
 const launchChromeAndRunLighthouse = async (url: string) => {
   const chrome = await chromeLauncher.launch({
     chromeFlags: ["--disable-gpu", "--headless", "--no-zygote", "--no-sandbox"],
@@ -35,15 +46,4 @@ function createCategoryReport(results: any): any {
     categoryReport[category.id] = Math.round(category.score * 100);
     return categoryReport;
   }, {});
-}
-
-export async function runLighthouseAndGetReport(url: string): Promise<LighthouseReport> {
-  const lighthouseResult = await launchChromeAndRunLighthouse(url);
-
-  const htmlReport = createHtmlReport(lighthouseResult.lhr);
-  const jsonReport = createJsonReport(lighthouseResult.lhr);
-
-  const categoryReport = createCategoryReport(lighthouseResult.lhr);
-
-  return { metrics: categoryReport, htmlReport, audits: Object.values(jsonReport.audits) };
 }
