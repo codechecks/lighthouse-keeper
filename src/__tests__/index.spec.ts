@@ -397,8 +397,8 @@ Object {
 | SEO            |    -   |    84 |         - |
 
 
-    ## New Failed Audits (1):
-    ### Document does not have a meta description
+## New Failed Audits (1):
+### Document does not have a meta description
 Meta descriptions may be included in search results to concisely summarize page content.",
           "name": "Lighthouse Keeper",
           "shortDescription": "Performance scores dropped too low!",

@@ -95,10 +95,10 @@ function getLongDescription(
     }
 
     return `
-    ## New Failed Audits (${newFailedAudits.length}):
-    ${artifactComparison.failedAudits
-      .map(a => `### ${a.title}\n${a.description}`)
-      .join("\n\n---\n\n")}`;
+## New Failed Audits (${newFailedAudits.length}):
+${artifactComparison.failedAudits
+  .map(a => `### ${a.title}\n${a.description}`)
+  .join("\n\n---\n\n")}`;
   }
 
   // prettier-ignore
