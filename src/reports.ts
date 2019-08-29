@@ -19,7 +19,7 @@ export function getReport({
   const failedMetrics = getFailedMetrics(reportComparison, minScores);
 
   return {
-    status: "success",
+    status: failedMetrics.length > 0 ? "failure" : "success",
     name: "Lighthouse Keeper",
     shortDescription: getShortDescription(reportComparison, baselineExists, failedMetrics),
     longDescription: getLongDescription(reportComparison, failedMetrics, minScores),
