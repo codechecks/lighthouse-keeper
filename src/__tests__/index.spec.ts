@@ -130,10 +130,7 @@ Object {
 | Best practices |  ✅ +70 |    70 |         - |
 | SEO            |  ✅ +84 |    84 |         - |
 
-
-## New Failed Audits:
-
-  ",
+",
           "name": "Lighthouse Keeper",
           "shortDescription": "New Lighthouse report generated!",
           "status": "success",
@@ -259,10 +256,7 @@ Object {
 | Best practices |  ✅ +3  |    70 |         - |
 | SEO            |    -   |    84 |         - |
 
-
-## New Failed Audits:
-
-  ",
+",
           "name": "Lighthouse Keeper",
           "shortDescription": "2 metrics got better, good job!",
           "status": "success",

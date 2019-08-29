@@ -1,6 +1,7 @@
 import { CodeChecksReport } from "@codechecks/client";
 import { ReportComparison, MetricComparison, FailedMetricComparison } from "./compareReports";
 import { MinScores } from "./types";
+import { LighthouseAudit } from "./lighthouse/types";
 
 const table = require("markdown-table");
 
@@ -88,6 +89,18 @@ function getLongDescription(
     ];
   }
 
+  function renderFailedAudits(newFailedAudits: LighthouseAudit[]): string {
+    if (newFailedAudits.length === 0) {
+      return "";
+    }
+
+    return `
+    ## New Failed Audits (${newFailedAudits.length}):
+    ${artifactComparison.failedAudits
+      .map(a => `### ${a.title}\n${a.description}`)
+      .join("\n\n---\n\n")}`;
+  }
+
   // prettier-ignore
   const rows = [
     ['Name', 'Status', 'Score', 'Min Score'],
@@ -98,12 +111,7 @@ function getLongDescription(
       align: ["l", "c", "r", "r"],
     }) + "\n";
 
-  const newFailedAudits = `
-## New Failed Audits:
-${artifactComparison.failedAudits.map(a => `### ${a.title}\n${a.description}`).join("\n\n---\n\n")}
-  `;
-
-  return [metricsTable, newFailedAudits].join("\n");
+  return [metricsTable, renderFailedAudits(artifactComparison.failedAudits)].join("\n");
 }
 
 function getIcon(diff: number, failed: boolean): string {
