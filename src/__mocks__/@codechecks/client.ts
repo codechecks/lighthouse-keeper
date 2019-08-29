@@ -1,5 +1,4 @@
 import * as CC from "@codechecks/client";
-import { join } from "path";
 
 export const codechecks: Partial<typeof CC.codechecks> = {
   report: jest.fn(),
