@@ -12,7 +12,7 @@
 ## Install
 
 ```sh
-npm install --save-dev @codechecks/lighthouse-keeper
+npm install --save-dev lighthouse-keeper
 ```
 
 ## Usage
@@ -30,10 +30,45 @@ checks:
       buildPath: ./build
       # or full url
       # url: https://google.com
+      # you can specify minScores and automatically fail builds
+      minScores:
+        performance: 90
   # ...
 ```
 
 ## API
+
+### lighthouseKeeper(options: Options): Promise\<void>
+
+#### options
+
+```typescript
+interface Options {
+  url?: string;
+  buildPath?: string;
+  minScores?: Dictionary<number>;
+}
+```
+
+##### url
+
+optional `string`<br> Provide URL that lighthouse will be ran against. `url` OR `buildPath` MUST be
+provided.
+
+##### buildPath
+
+optional `string`<br> Provide relative path to directory with build. It will be served using
+`http-server` package and lighthouse will be ran against it. `url` OR `buildPath` MUST be provided.
+
+##### minScore
+
+optional `Dictionary of numbers`<br> Provide minimal scores for each metric. Possible keys are:
+
+- performance
+- accessibility
+- best-practices
+- seo
+- pwa
 
 ## Contributing
 
@@ -42,3 +77,8 @@ All contributions are welcomed. Read more in [CONTRIBUTING.md](./CONTRIBUTING.md
 ## Licence
 
 MIT @ [codechecks.io](https://codechecks.io)
+
+## Acknowledges
+
+Thanks go to @andreasonny83 for his support and creating the
+[lighthouse-ci](https://github.com/andreasonny83/lighthouse-ci)

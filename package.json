@@ -1,15 +1,19 @@
 {
-  "name": "@codechecks/lighthouse-keeper",
+  "name": "lighthouse-keeper",
   "description": "Keep an eye on Google Lighthouse score changes",
   "keywords": [
     "lighthouse",
     "google-lighthouse",
     "performance",
+    "accessibility",
+    "best-practices",
+    "seo",
+    "pwa",
     "codechecks"
   ],
   "repository": "codechecks/lighthouse-keeper",
   "author": "Chris Kaczor <chris@kaczor.io>",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "license": "MIT",
