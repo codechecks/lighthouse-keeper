@@ -1,3 +1,6 @@
+const pkg = require("../package.json");
+require("please-upgrade-node")(pkg);
+
 import { codechecks } from "@codechecks/client";
 
 import { getReport } from "./reports";
